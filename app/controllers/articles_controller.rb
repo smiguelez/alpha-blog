@@ -1,9 +1,18 @@
 class ArticlesController < ApplicationController
-   def new
-      @article = Article.new
-   end
 
-   def create
+  def index
+    @articles = Article.all
+  end
+
+  def new
+    @article = Article.new
+  end
+
+  def edit
+    @article = Article.find(params[:id])    
+  end
+
+  def create
 	# for instance, if you just want to display the parameters received for the article creation:
 	# render plain: params[:article].inspect
 
@@ -16,6 +25,17 @@ class ArticlesController < ApplicationController
          render 'new'
       end
    end
+
+  def update
+    @article = Article.find(params[:id])
+
+    if @article.update(article_params)
+      flash[:notice] = "Article was successfully modified"
+      redirect_to article_path(@article)
+    else
+      render 'new'
+    end
+  end
 
   def show
     @article = Article.find(params[:id])
